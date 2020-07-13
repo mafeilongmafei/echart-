@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #tubiao {
+            width: 700px;
+            height: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="tubiao"></div>
+    </div>
+    <script src="./js/echarts.js"></script>
+    <script src="./js/map/js/china.js"></script>
+    <script>
+        var echartInstance = echarts.init(document.getElementById("tubiao"))
+      
+	  
+	  
+	
+     function  request(url , options) {
+            return fetch(url , options).then(res=>{
+				if(res.ok) {
+					return res.json()
+				}else {
+					throw new Error("请求失败")
+				}
+			})
+			
+        }
+    async function getData() {
+		let data1 = await request("./file.json")
+		var options = {
+		
+		    tooltip: {
+		
+		    },
+		    visualMap: [
+		        { // 第一个 visualMap 组件
+		            type: 'piecewise', // 定义为连续型 visualMap
+		            pieces: [
+						{
+						    min: 0,
+						    max: 0,
+						    label: "0",
+						    color: "#ccc"
+						},
+		                {
+		                    min: 1,
+		                    max: 99,
+		                    label: "1~99",
+		                    color: "pink"
+		                },
+		                {
+		                    min: 100,
+		                    max: 999,
+		                    label: "100~999",
+		                    color: "red"
+		                },
+		                {
+		                    min: 1000,
+		                    max: 9999,
+		                    label: "100~999",
+		                    color: "black"
+		                }
+		            ]
+		        }
+		    ],
+		    series: [
+		        {
+		            name: "地图",
+		            type: "map",
+		            map: "china",
+					label: {
+					                show: true
+					            },
+		            markPoint: {
+		                symbol: "pin",
+		                data: [
+		                    {
+		                        name: '山西',
+		                        x: 220,
+		                        y: 250
+		                    }
+		                ]
+		            },
+		             emphasis: {
+		                itemStyle: {
+		                    areaColor: "#ccc", //高亮时的颜色
+		                }
+		            },
+		            itemStyle : {
+		                areaColor : "#fff" //地图颜色
+		            },
+		            data: data1.map(res=>{
+						return {
+							name :  res.provinceShortName,
+							value : res.currentConfirmedCount,
+							
+						}
+					})
+		
+		        },
+		
+		    ],
+		    color: ['#c23531', '#2f4554', '#61a0a8', '#d48265', '#91c7ae', '#749f83', '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3']
+		
+		
+		}
+		echartInstance.setOption(options)
+	}
+	getData()
+
+    
+   
+
+       
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Document</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+
+			#main {
+				height: 100vh;
+				overflow: hidden;
+				display: flex;
+				background-color: #06075a;
+			}
+
+			.left {
+				width: 25%;
+			}
+
+			.left .chart1 {
+				height: 300px;
+			}
+
+			.middle {
+				width: 50%;
+			}
+
+			.right {
+				width: 25%;
+			}
+
+			.right .chart2 {
+				height: 300px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<div id="main">
+				<div class="left">
+					<div class="chart1">
+
+					</div>
+					<div class="chart3" style="height: 300px">
+
+					</div>
+				</div>
+				<div class="middle">
+					<div class="chart5" style="height: 400px;"></div>
+				</div>
+				<div class="right">
+					<div class="chart2">
+
+					</div>
+					<div class="chart4" style="height: 300px">
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="./js/echarts.js"></script>
+		<script src="./js/map/js/china.js"></script>
+		<script src="./js/vue-2.4.0.js"></script>
+		<script>
+			var geoCoordMap = {
+				"台湾": [121.509062, 25.044332],
+				"河北": [114.502461, 38.045474],
+				"山西": [112.549248, 37.857014],
+				"内蒙古": [111.670801, 40.818311],
+				"辽宁": [123.429096, 41.796767],
+				"吉林": [125.3245, 43.886841],
+				"黑龙江": [126.642464, 45.756967],
+				"江苏": [118.767413, 32.041544],
+				"浙江": [120.153576, 30.287459],
+				"安徽": [117.283042, 31.86119],
+				"福建": [119.306239, 26.075302],
+				"江西": [115.892151, 28.676493],
+				"山东": [117.000923, 36.675807],
+				"河南": [113.665412, 34.757975],
+				"湖北": [114.298572, 30.584355],
+				"湖南": [112.982279, 28.19409],
+				"广东": [113.280637, 23.125178],
+				"广西": [108.320004, 22.82402],
+				"海南": [110.33119, 20.031971],
+				"四川": [104.065735, 30.659462],
+				"贵州": [106.713478, 26.578343],
+				"云南": [102.712251, 25.040609],
+				"西藏": [91.132212, 29.660361],
+				"陕西": [108.948024, 34.263161],
+				"甘肃": [103.823557, 36.058039],
+				"青海": [101.778916, 36.623178],
+				"宁夏": [106.278179, 38.46637],
+				"新疆": [87.617733, 43.792818],
+				"北京": [116.405285, 39.904989],
+				"天津": [117.190182, 39.125596],
+				"上海": [121.472644, 31.231706],
+				"重庆": [106.504962, 29.533155],
+				"香港": [114.173355, 22.320048],
+				"澳门": [113.54909, 22.198951]
+			};
+			var markPointData = [{
+				"name": "新疆",
+				"coord": [
+					87.665966, 43.869561, 90
+				],
+				"runConut": '537',
+				"num": '234'
+			}];
+
+			function randomData() {
+				return Math.round(Math.random() * 500);
+			}
+
+			var dataMap = [{
+					name: '北京',
+					value: '100'
+				}, {
+					name: '天津',
+					value: randomData()
+				},
+				{
+					name: '上海',
+					value: randomData()
+				}, {
+					name: '重庆',
+					value: randomData()
+				},
+				{
+					name: '河北',
+					value: randomData()
+				}, {
+					name: '河南',
+					value: randomData()
+				},
+				{
+					name: '云南',
+					value: randomData()
+				}, {
+					name: '辽宁',
+					value: randomData()
+				},
+				{
+					name: '黑龙江',
+					value: randomData()
+				}, {
+					name: '湖南',
+					value: randomData()
+				},
+				{
+					name: '安徽',
+					value: randomData()
+				}, {
+					name: '山东',
+					value: randomData()
+				},
+				{
+					name: '新疆',
+					value: randomData()
+				}, {
+					name: '江苏',
+					value: randomData()
+				},
+				{
+					name: '浙江',
+					value: randomData()
+				}, {
+					name: '江西',
+					value: randomData()
+				},
+				{
+					name: '湖北',
+					value: randomData()
+				}, {
+					name: '广西',
+					value: randomData()
+				},
+				{
+					name: '甘肃',
+					value: randomData()
+				}, {
+					name: '山西',
+					value: randomData()
+				},
+				{
+					name: '内蒙古',
+					value: randomData()
+				}, {
+					name: '陕西',
+					value: randomData()
+				},
+				{
+					name: '吉林',
+					value: randomData()
+				}, {
+					name: '福建',
+					value: randomData()
+				},
+				{
+					name: '贵州',
+					value: randomData()
+				}, {
+					name: '广东',
+					value: randomData()
+				},
+				{
+					name: '青海',
+					value: randomData()
+				}, {
+					name: '西藏',
+					value: randomData()
+				},
+				{
+					name: '四川',
+					value: randomData()
+				}, {
+					name: '宁夏',
+					value: randomData()
+				},
+				{
+					name: '海南',
+					value: randomData()
+				}, {
+					name: '台湾',
+					value: randomData()
+				},
+				{
+					name: '香港',
+					value: randomData()
+				}, {
+					name: '澳门',
+					value: randomData()
+				}
+			];
+			var convertData = function(data) {
+				var res = [];
+				for (var i = 0; i < data.length; i++) {
+					var geoCoord = geoCoordMap[data[i].name];
+					if (geoCoord) {
+						res.push({
+							name: data[i].name,
+							value: geoCoord.concat(data[i].value)
+						});
+					}
+				}
+				return res;
+			};
+		</script>
+
+		<script>
+			new Vue({
+				el: "#app",
+				data() {
+					return {
+						echartsArr: []
+					}
+				},
+				mounted() {
+					this.initChart5()
+
+					//屏幕大小变化时重新计算大小
+					window.onresize = () => {
+						this.echartsArr.forEach(chart => {
+							console.log(chart)
+							chart.resize()
+						})
+
+					}
+
+
+				},
+				methods: {
+					initChart5() {
+						let myChart = echarts.init(document.getElementsByClassName("chart5")[0])
+						let option = {
+							tooltip: {},
+							"grid": {},
+							"geo": {
+								"map": "china",
+								//"center": [0, 12],
+								"aspectScale": 0.8,
+								"roam": true,
+								"scaleLimit": {
+									"min": 1,
+									"max": 10
+								},
+
+								"zoom": 1.2,
+
+
+								itemStyle: {
+									normal: {
+										borderColor: 'rgba(147, 235, 248, 1)',
+										borderWidth: 1,
+										areaColor: {
+											type: 'radial',
+											x: 0.5,
+											y: 0.5,
+											r: 0.8,
+											colorStops: [{
+												offset: 0,
+												color: 'rgba(147, 235, 248, 0)' // 0% 处的颜色
+											}, {
+												offset: 1,
+												color: 'rgba(147, 235, 248, .5)' // 100% 处的颜色
+											}],
+											globalCoord: false // 缺省为 false
+										},
+										shadowColor: 'rgba(128, 217, 248, 1)',
+										// shadowColor: 'rgba(255, 255, 255, 1)',
+										shadowOffsetX: -5,
+										shadowOffsetY: 12,
+										shadowBlur: 10
+									},
+									emphasis: {
+										areaColor: '#389BB7',
+										borderWidth: 0
+									}
+								}
+							},
+
+							series: [
+								// {
+								// 	type : "scatter",
+								// 	coordinateSystem  :  "geo",
+								// 	"data": convertData(dataMap),
+								// 	// label : {
+								// 	// 	show : true,
+								// 	// },
+								// 	itemStyle : {
+								// 		color : "blue",
+								// 	},
+								// 	markPoint : {
+								// 		data : [
+								// 			{
+								// 			    "name": "杭州",
+								// 			    "coord": [
+								// 			        119.5313, 29.8773
+								// 			    ],
+								// 			}
+								// 		]
+								// 	},
+								// 	tooltip : {
+								// 		 // trigger : "axis"
+
+								// 			formatter(p) {
+								// 				return "<p style='text-align:center'>"+ p.name + "</p>" + "数量:" + p.value[2]
+								// 			}
+								// 	}
+								// },
+								{
+									type: "effectScatter",
+									coordinateSystem: "geo",
+									"data": convertData(dataMap),
+
+									itemStyle: {
+										color: "pink",
+									},
+									markPoint: {
+										data: [{
+											"name": "杭州",
+											"coord": [
+												119.5313, 29.8773
+											],
+										}]
+									},
+									tooltip: {
+										// trigger : "axis"
+
+										formatter(p) {
+											return "<p style='text-align:center'>" + p.name + "</p>" + "数量:" + p.value[2]
+										}
+									},
+									rippleEffect: {
+										scale: 4,
+										period: 5,
+										brushType: "stroke"
+									}
+
+								},
+								{
+									type : "lines",
+									  coordinateSystem  : "geo",
+									   polyline : true,
+									  
+									    zlevel: 1,
+									           effect: {
+									               show: true,
+									               period: 6,
+									               trailLength: 0.7,
+									               color: 'red',
+									               symbolSize: 3
+									           },
+									           lineStyle: {
+									               normal: {
+									                   color: "black",
+									                   width: 0,
+									                   curveness: 0.2
+									               }
+									           },
+									   data : [
+										     { fromName: '上海', toName: '郑州', coords: [ [121.4648,31.2891], [113.4668,34.6234] ] },
+										     { fromName: '上海', toName: '长春', coords: [ [121.4648,31.2891], [125.8154,44.2584] ] },
+									   ]
+									  
+								}
+							],
+
+
+						}
+						myChart.setOption(option)
+						this.echartsArr.push(myChart)
+
+
+					},
+				},
+				beforeDestroy() {
+					window.onresize = null
+				}
+
+
+			})
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #main {
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .left {
+            width: 40%;
+        }
+
+        .left .chart1 {
+            height: 300px;
+        }
+
+        .middle {
+            width: 30%;
+        }
+
+        .right {
+            width: 30%;
+        }
+
+        .right .chart2 {
+            height: 300px;
+        }
+
+        .chart1 {}
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div id="main">
+            <div class="left">
+                <div class="chart1">
+
+                </div>
+                <div class="chart3" style="height: 300px">
+
+                </div>
+            </div>
+            <div class="middle">
+                <div class="chart5" style="height: 600px;"></div>
+            </div>
+            <div class="right">
+                <div class="chart2">
+
+                </div>
+                <div class="chart4" style="height: 300px">
+                
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/echarts.js"></script>
+    <script src="./js/map/js/province/jiangsu.js"></script>
+    <script src="./js/vue-2.4.0.js"></script>
+    
+    <script>
+        new Vue({
+            el: "#app",
+            data() {
+                return {
+                    echartsArr: []
+                }
+            },
+            mounted() {
+                this.initChart()
+                this.initChart2()
+                this.initChart3()
+                this.initChart4()
+                this.initChart5()
+
+                //屏幕大小变化时重新计算大小
+                window.onresize = () => {
+                    this.echartsArr.forEach(chart => {
+                        console.log(chart)
+                        chart.resize()
+                    })
+
+                }
+
+
+            },
+            methods: {
+                initChart() {
+                    var myChart = echarts.init(document.getElementsByClassName("chart1")[0])
+                    // 指定图表的配置项和数据
+                    var option = {
+                        title: {
+                            text: 'ECharts 入门示例'
+                        },
+                        tooltip: {},
+                        legend: {
+                            data: ['销量']
+                        },
+                        grid: {
+                            left: 100,
+
+                        },
+                        xAxis: {
+                            axisLine: {
+                                show: false
+                            },
+                            axisTick: {
+                                show: false
+                            },
+                            axisLabel: {
+                                show: false,
+
+                            },
+                            splitLine: {
+                                show: false
+                            }
+
+                        },
+                        yAxis: {
+                            data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+                            axisTick: {
+                                show: false
+                            },
+                            axisLine: {
+                                show: false
+                            },
+                            axisLabel: {
+                                color: "blue",
+                                fontWeight: "bold"
+                            },
+                        },
+                        series: [{
+                            name: '销量',
+                            type: 'bar',
+                            data: [5, 20, 36, 10, 10, 20],
+                            label: {
+                                show: true,
+                                position: "right",
+                                color: "blue"
+                            },
+                            //   渐变
+                            color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{
+                                offset: 0,
+                                color: "rgb(86,178,231)"
+                            },
+                            {
+                                offset: 0.5,
+                                color: "rgb(136,196,231)"
+                            },
+                            {
+                                offset: 1,
+                                color: "rgb(86,178,231)"
+                            }
+                            ])
+                        }]
+                    };
+                    myChart.setOption(option)
+                    this.echartsArr.push(myChart)
+                }
+                ,
+                initChart2() {
+                    var myChart = echarts.init(document.getElementsByClassName("chart2")[0])
+                    // 指定图表的配置项和数据
+                    var option = {
+                        title: {
+                            text: 'ECharts 入门示例'
+                        },
+                        legend: {
+                            data: ['销量']
+                        },
+                        grid: {
+                            left: 100,
+
+                        },
+                        xAxis: {
+                            axisLine: {
+                                show: false
+                            },
+                            axisTick: {
+                                show: false
+                            },
+                            axisLabel: {
+                                show: false,
+
+                            },
+                            splitLine: {
+                                show: false
+                            }
+
+                        },
+                        yAxis: {
+                            data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+                            axisTick: {
+                                show: false
+                            },
+                            axisLine: {
+                                show: false
+                            },
+                            axisLabel: {
+                                color: "blue",
+                                fontWeight: "bold"
+                            },
+                            position: "right"
+                        },
+                        series: [{
+                            name: '销量',
+                            type: 'bar',
+                            data: [-5, -20, -36, -10, -10, -20],
+                            label: {
+                                show: true,
+                                position: "left",
+                                color: "blue",
+                                formatter(p) {
+                                    return Math.abs(p.value)
+                                }
+                            },
+                            //   渐变
+                            color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{
+                                offset: 0,
+                                color: "rgb(86,178,231)"
+                            },
+                            {
+                                offset: 0.5,
+                                color: "rgb(136,196,231)"
+                            },
+                            {
+                                offset: 1,
+                                color: "rgb(86,178,231)"
+                            }
+                            ])
+                        }]
+                    };
+                    myChart.setOption(option)
+                    this.echartsArr.push(myChart)
+                },
+                initChart3() {
+                    var myChart = echarts.init(document.getElementsByClassName("chart3")[0])
+                    // 指定图表的配置项和数据
+                    var option = {
+                        color: ['orangered', "skyblue"],
+                         tooltip: {
+                             trigger : "axis",
+                             axisPointer : {
+                                 type : "line"
+                             }
+                         },
+                        title: {
+                            text: 'ECharts 入门示例'
+                        },
+                        legend: {
+                            data: ['销量', '出国'],
+                            icon : "circle"
+                        },
+                        grid: {
+                            // 调整图标的位置
+                            left: 100,
+
+                        },
+                        xAxis: {
+
+                            axisTick: {
+                                show: false
+                            },
+                            axisLine: {
+                                show: false
+                            },
+                            splitLine: {
+                                show: false
+                            },
+                            data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+
+                        },
+                        yAxis: {
+
+                            axisTick: {
+                                show: false
+                            },
+                            axisLine: {
+                                show: false
+                            },
+                            axisLabel: {
+                                color: "pink",
+                                fontWeight: "bold",
+                                formatter(p) {
+                                    return p + "%"
+                                }
+                            },
+
+                            splitLine: { //分割线
+                                show: false
+                            },
+                        },
+                        series: [{
+                            name: '销量',
+                            type: 'line',
+                            data: [5, 20, 36, 10, 10, 20],
+                            smooth: true,//平滑
+                        },
+                        {
+                            name: '出国',
+                            type: 'line',
+                            data: [23, 10, 66, 20, 70, 37],
+                            smooth: true,//平滑
+                        }
+                        ]
+                    };
+                    myChart.setOption(option)
+                    this.echartsArr.push(myChart)
+
+                },
+                 initChart4() {
+                    var myChart = echarts.init(document.getElementsByClassName("chart4")[0])
+                    // 指定图表的配置项和数据
+                    var option = {
+                        color: ['orangered', "skyblue"],
+                        tooltip: {
+                        },
+                        title: {
+                            text: 'ECharts 入门示例'
+                        },
+                        xAxis: {
+
+                            axisTick: {
+                                show: false
+                            },
+                            axisLine: {
+                                show: false
+                            },
+                            splitLine: {
+                                show: false
+                            },
+                            axisLabel : {
+                                color : "pink",
+                                rotate : -45
+                            },
+                            
+                            data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+
+                        },
+                        yAxis: {
+
+                            show : false
+                        },
+                        series: [{
+                            name: '销量',
+                            type: 'bar',
+                            data: [5, 20, 36, 10, 10, 20],
+                            barMaxWidth: "30%",
+                            label : {
+                                show : true,
+                                position : 'top'
+                            }
+                        }
+                       
+                        ]
+                    };
+                    myChart.setOption(option)
+                    this.echartsArr.push(myChart)
+
+                },
+                initChart5() {
+                    var myChart = echarts.init(document.getElementsByClassName("chart5")[0])
+                    // 指定图表的配置项和数据
+                    var option = {
+                        tooltip: {
+                        },
+                        series: [
+                            {
+                                type : "map",
+                                map : "江苏",
+                                itemStyle : {
+                                    areaColor : "pink"
+                                },
+                                label : {
+                                    show : true
+                                },
+                                 emphasis: {
+                                    itemStyle: {
+                                        areaColor: "#ccc", //高亮时的颜色
+                                    }
+                                },
+                               
+                            }
+                        ]
+                    };
+                    myChart.setOption(option)
+                    this.echartsArr.push(myChart)
+
+                }
+            },
+            beforeDestroy() {
+                window.onresize = null
+            }
+
+
+        })
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

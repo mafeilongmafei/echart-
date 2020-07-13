@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #tubiao {
+            width: 400px;
+            height: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="tubiao"></div>
+    </div>
+    <script src="./js/echarts.js"></script>
+    <script>
+        var echartInstance = echarts.init(document.getElementById("tubiao"))
+        var options = {
+            title: {
+                text: "马飞龙",
+                link: "http://www.baidu.com",
+                left: "center",
+                textStyle: {
+                    color: "#ccc",
+                },
+            },
+            xAxis: {
+                type: "category",
+                data: ["周一", "周二", "周三", "周四", "周五", "周六"],
+                axisLabel: {
+                    rotate: 45 //字体旋转角度
+                }
+            },
+
+            yAxis: {},//必须得有
+            tooltip: {
+                formatter: function (data) {
+                    // console.log(data) 可以修改提示的信息
+                    return data.name + "修改的"
+                }
+            },//提示组件
+            legend: {
+                bottom: "90%"
+            },//图例组件
+            series: [
+                {
+                    name: "报名数",
+                    type: "line",
+                    data: [11, 23, 46, 77, 42, 78],
+                    // color : "pink"
+                },
+                {
+                    name: "咨询量",
+                    type: "line",
+                    data: [20, 45, 2, 70, 34, 67],
+                    // color: "red"
+                },
+                {
+                    type: "bar",
+                    data: [34, 23, 56, 17, 89, 34],
+                    // color : "black"
+                }
+            ],
+            color: ['#c23531', '#2f4554', '#61a0a8', '#d48265', '#91c7ae', '#749f83', '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3']
+
+
+        }
+        echartInstance.setOption(options)
+
+    </script>
+</body>
+
+</html>
